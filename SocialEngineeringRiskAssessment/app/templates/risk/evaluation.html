@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}Risk Evaluation - SecureRisk AI{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 900px; margin: 0 auto;">
+    
+    <div style="text-align: center; margin-bottom: 2rem;">
+        <h2 style="margin-bottom: 0.5rem;">AI-Driven Risk Evaluation</h2>
+        <div style="color: var(--text-muted);">Assessment for {{ user.name }} ({{ user.department }})</div>
+    </div>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 3rem;">
+        
+        <div style="text-align: center; padding: 2rem; border-radius: 0.5rem; background-color: var(--bg-dark); border: 2px solid {% if assessment.risk_level == 'HIGH' %}var(--danger){% elif assessment.risk_level == 'MEDIUM' %}var(--warning){% else %}var(--success){% endif %};">
+            <h3 style="margin-top: 0; margin-bottom: 1rem; color: var(--text-muted);">Final Risk Score</h3>
+            <div style="font-size: 4rem; font-weight: 700; line-height: 1; margin-bottom: 1rem; color: {% if assessment.risk_level == 'HIGH' %}var(--danger){% elif assessment.risk_level == 'MEDIUM' %}var(--warning){% else %}var(--success){% endif %};">
+                {{ assessment.final_risk_score }}<span style="font-size: 2rem;">/100</span>
+            </div>
+            <div class="badge badge-{% if assessment.risk_level == 'HIGH' %}high{% elif assessment.risk_level == 'MEDIUM' %}medium{% else %}low{% endif %}" style="font-size: 1.25rem; padding: 0.5rem 1.5rem;">
+                {{ assessment.risk_level }} RISK
+            </div>
+        </div>
+        
+        <div>
+            <h3 style="margin-top: 0; color: var(--accent-blue);">Component Scores</h3>
+            
+            <div style="margin-bottom: 1rem;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                    <span>ML Prediction Probability</span>
+                    <strong>{{ "%.1f"|format(assessment.ml_probability) }}%</strong>
+                </div>
+                <div style="height: 8px; background-color: var(--bg-dark); border-radius: 4px; overflow: hidden;">
+                    <div style="height: 100%; width: {{ assessment.ml_probability }}%; background-color: var(--accent-blue);"></div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 1rem;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                    <span>Profile Risk</span>
+                    <strong>{{ assessment.profile_score }}/100</strong>
+                </div>
+                <div style="height: 8px; background-color: var(--bg-dark); border-radius: 4px; overflow: hidden;">
+                    <div style="height: 100%; width: {{ assessment.profile_score }}%; background-color: var(--warning);"></div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 1rem;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                    <span>Behavioural Risk</span>
+                    <strong>{{ assessment.behavioural_score }}/100</strong>
+                </div>
+                <div style="height: 8px; background-color: var(--bg-dark); border-radius: 4px; overflow: hidden;">
+                    <div style="height: 100%; width: {{ assessment.behavioural_score }}%; background-color: var(--danger);"></div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+    <h3 style="margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;"><i class="fa-solid fa-triangle-exclamation"></i> Identified Risk Factors</h3>
+    
+    {% if factors %}
+        <div style="display: grid; gap: 1rem; margin-bottom: 3rem;">
+            {% for factor in factors %}
+                <div style="background-color: var(--bg-dark); padding: 1rem; border-radius: 0.5rem; border-left: 4px solid {% if factor.severity == 'High' %}var(--danger){% elif factor.severity == 'Medium' %}var(--warning){% else %}var(--success){% endif %};">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                        <h4 style="margin: 0;">{{ factor.factor }}</h4>
+                        <span class="badge badge-{% if factor.severity == 'High' %}high{% elif factor.severity == 'Medium' %}medium{% else %}low{% endif %}">{{ factor.severity }} Severity</span>
+                    </div>
+                    <p style="margin: 0; color: var(--text-muted);">{{ factor.explanation }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p style="color: var(--text-muted); margin-bottom: 3rem;">No major risk factors identified.</p>
+    {% endif %}
+
+    <h3 style="margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;"><i class="fa-solid fa-clipboard-check"></i> Security Recommendations</h3>
+    
+    {% if recommendations %}
+        <div style="display: grid; gap: 1rem; margin-bottom: 2rem;">
+            {% for rec in recommendations %}
+                <div style="background-color: rgba(59, 130, 246, 0.1); padding: 1rem; border-radius: 0.5rem; border-left: 4px solid var(--accent-blue);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                        <strong>Action Required</strong>
+                        <span class="badge" style="background-color: rgba(248, 250, 252, 0.1); color: var(--text-main);">Priority: {{ rec.priority }}</span>
+                    </div>
+                    <p style="margin: 0;">{{ rec.recommendation }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p style="color: var(--text-muted); margin-bottom: 2rem;">Maintain current security posture.</p>
+    {% endif %}
+
+    <div style="text-align: center; margin-top: 3rem;">
+        <a href="{{ url_for('main.dashboard') }}" class="btn btn-outline"><i class="fa-solid fa-arrow-left"></i> Return to Dashboard</a>
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Start Simulation - SecureRisk AI{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 600px; margin: 0 auto;">
+    <h2 style="margin-bottom: 2rem;">Run Attack Simulation</h2>
+    
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="alert alert-warning" style="background: rgba(245, 158, 11, 0.2); color: var(--warning); padding: 1rem; border-radius: 0.375rem; margin-bottom: 1.5rem;">
+            {% for message in messages %}
+                <i class="fa-solid fa-triangle-exclamation"></i> {{ message }}
+            {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('simulation.start_simulation') }}">
+        
+        <div class="form-group">
+            <label class="form-label" for="user_id">Select User</label>
+            <select id="user_id" name="user_id" class="form-control" required>
+                <option value="">Select a user profile</option>
+                {% for user in users %}
+                    <option value="{{ user.id }}">{{ user.name }} ({{ user.department }})</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label" for="scenario_type">Select Scenario</label>
+            <select id="scenario_type" name="scenario_type" class="form-control" required>
+                <option value="Phishing">Phishing Email (Account Verification)</option>
+                <option value="Fake IT Support">Fake IT Support (Under Dev)</option>
+                <option value="Password Reset">Password Reset Request (Under Dev)</option>
+                <option value="Suspicious Attachment">Suspicious Attachment (Under Dev)</option>
+            </select>
+        </div>
+        
+        <div class="alert" style="background: rgba(59, 130, 246, 0.1); padding: 1rem; border-radius: 0.375rem; margin-bottom: 1.5rem; border-left: 4px solid var(--accent-blue);">
+            <strong><i class="fa-solid fa-info-circle"></i> Note:</strong> All simulations run locally within this application. No real emails are sent and no actual credentials are collected.
+        </div>
+        
+        <div style="text-align: right;">
+            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-play"></i> Launch Simulation</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

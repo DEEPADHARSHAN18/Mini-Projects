@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}AI-Driven Risk Assessment{% endblock %}</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/" class="nav-brand">
+            <i class="fa-solid fa-shield-halved" style="color: var(--accent-blue);"></i>
+            SecureRisk AI
+        </a>
+        <div class="nav-links">
+            <a href="{{ url_for('main.index') }}">Home</a>
+            <a href="{{ url_for('main.dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('users.index') }}">Users</a>
+            <a href="{{ url_for('simulation.select') }}">Simulations</a>
+            <a href="{{ url_for('simulation.select') }}" class="btn btn-primary">Get Started</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 SecureRisk AI - Capstone Project. Defensive Cybersecurity Risk Assessment.</p>
+    </footer>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>

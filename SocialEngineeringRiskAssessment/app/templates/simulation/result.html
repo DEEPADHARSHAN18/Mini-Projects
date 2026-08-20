@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}Simulation Result - SecureRisk AI{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 800px; margin: 0 auto;">
+    
+    <div style="text-align: center; margin-bottom: 2rem;">
+        <h2 style="margin-bottom: 0.5rem;">SIMULATION COMPLETED</h2>
+        <div style="color: var(--text-muted);">This was a controlled security awareness exercise.</div>
+    </div>
+    
+    {% if response.clicked %}
+        <div class="alert alert-danger" style="background: rgba(239, 68, 68, 0.1); border-left: 4px solid var(--danger); padding: 1.5rem; margin-bottom: 2rem;">
+            <h3 style="color: var(--danger); margin-top: 0;"><i class="fa-solid fa-triangle-exclamation"></i> Action Required</h3>
+            <p>You clicked on a simulated malicious link. In a real attack, this could have compromised your credentials or installed malware on your device.</p>
+            <p style="margin-bottom: 0; font-weight: bold;">No real data was collected during this simulation.</p>
+        </div>
+    {% elif response.reported %}
+        <div class="alert alert-success" style="background: rgba(16, 185, 129, 0.1); border-left: 4px solid var(--success); padding: 1.5rem; margin-bottom: 2rem;">
+            <h3 style="color: var(--success); margin-top: 0;"><i class="fa-solid fa-shield-check"></i> Excellent Response</h3>
+            <p style="margin-bottom: 0;">You correctly identified and reported the simulated social engineering attempt. This proactive behavior helps protect the organization.</p>
+        </div>
+    {% else %}
+        <div class="alert alert-warning" style="background: rgba(245, 158, 11, 0.1); border-left: 4px solid var(--warning); padding: 1.5rem; margin-bottom: 2rem;">
+            <h3 style="color: var(--warning); margin-top: 0;"><i class="fa-solid fa-info-circle"></i> Good Analysis</h3>
+            <p style="margin-bottom: 0;">You chose to analyze the email for suspicious indicators instead of interacting with it directly.</p>
+        </div>
+    {% endif %}
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+        
+        <div class="card" style="background-color: var(--bg-dark);">
+            <h4 style="margin-top: 0; color: var(--accent-blue);">Performance Summary</h4>
+            <table style="width: 100%; border-collapse: collapse;">
+                <tr>
+                    <td style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-color);"><strong>Scenario</strong></td>
+                    <td style="padding: 0.5rem 0; text-align: right; border-bottom: 1px solid var(--border-color);">{{ simulation.scenario_type }}</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-color);"><strong>Final Decision</strong></td>
+                    <td style="padding: 0.5rem 0; text-align: right; border-bottom: 1px solid var(--border-color);">{{ response.final_decision }}</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-color);"><strong>Indicators Identified</strong></td>
+                    <td style="padding: 0.5rem 0; text-align: right; border-bottom: 1px solid var(--border-color);">{{ response.indicators_identified }} / 5</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.5rem 0; padding-top: 1rem;"><strong>Awareness Score</strong></td>
+                    <td style="padding: 0.5rem 0; padding-top: 1rem; text-align: right;">
+                        <span class="badge {% if score >= 80 %}badge-low{% elif score >= 50 %}badge-medium{% else %}badge-high{% endif %}" style="font-size: 1.1rem;">
+                            {{ score }} / 100
+                        </span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        
+        <div class="card" style="background-color: var(--bg-dark);">
+            <h4 style="margin-top: 0; color: var(--accent-blue);">What should you have noticed?</h4>
+            <ul style="padding-left: 1.5rem; margin-bottom: 0; color: var(--text-muted);">
+                <li style="margin-bottom: 0.5rem;"><strong>Urgency:</strong> Phishing emails often create a false sense of urgency to make you act quickly without thinking.</li>
+                <li style="margin-bottom: 0.5rem;"><strong>Sender Domain:</strong> Always check the actual email address, not just the display name.</li>
+                <li style="margin-bottom: 0.5rem;"><strong>Unexpected Requests:</strong> Be skeptical of unexpected requests for verification or sensitive data.</li>
+                <li style="margin-bottom: 0.5rem;"><strong>Suspicious Links:</strong> Hover over links to check where they actually lead before clicking.</li>
+            </ul>
+        </div>
+        
+    </div>
+
+    <div style="text-align: center; margin-top: 2rem;">
+        <p style="margin-bottom: 1.5rem; color: var(--text-muted);">This behavioural data will now be passed to the AI Risk Evaluation engine.</p>
+        <a href="{{ url_for('risk.evaluate', sim_id=simulation.id) }}" class="btn btn-primary" style="font-size: 1.1rem; padding: 0.75rem 2rem;">
+            <i class="fa-solid fa-brain"></i> Run AI Risk Evaluation
+        </a>
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+
+{% block title %}Create User Profile - SecureRisk AI{% endblock %}
+
+{% block extra_head %}
+<style>
+    .profile-form {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+    }
+    
+    .form-section {
+        margin-bottom: 2.5rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+    
+    select.form-control {
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 1rem center;
+        background-size: 1em;
+    }
+    
+    .radio-group {
+        display: flex;
+        gap: 1.5rem;
+        margin-top: 0.5rem;
+    }
+    
+    .radio-label {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="card profile-form">
+    <h2 style="margin-bottom: 2rem;">Create User Profile</h2>
+    
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="alert alert-success" style="background: rgba(16, 185, 129, 0.2); color: var(--success); padding: 1rem; border-radius: 0.375rem; margin-bottom: 1.5rem;">
+            {% for message in messages %}
+                <i class="fa-solid fa-check-circle"></i> {{ message }}
+            {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('users.create_profile') }}">
+        
+        <div class="form-section">
+            <h3 style="margin-bottom: 1.5rem; color: var(--accent-blue);">Basic Information</h3>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label" for="employee_id">Employee ID</label>
+                    <input type="text" id="employee_id" name="employee_id" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="name">Full Name</label>
+                    <input type="text" id="name" name="name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="department">Department</label>
+                    <select id="department" name="department" class="form-control" required>
+                        <option value="">Select Department</option>
+                        <option value="IT">IT</option>
+                        <option value="HR">HR</option>
+                        <option value="Finance">Finance</option>
+                        <option value="Sales">Sales</option>
+                        <option value="Marketing">Marketing</option>
+                        <option value="Operations">Operations</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="role">Job Role</label>
+                    <input type="text" id="role" name="role" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="experience_level">Experience Level</label>
+                    <select id="experience_level" name="experience_level" class="form-control" required>
+                        <option value="">Select Level</option>
+                        <option value="Entry">Entry Level</option>
+                        <option value="Junior">Junior</option>
+                        <option value="Mid">Mid-Level</option>
+                        <option value="Senior">Senior</option>
+                        <option value="Executive">Executive</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="remote_work_frequency">Remote Work Frequency</label>
+                    <select id="remote_work_frequency" name="remote_work_frequency" class="form-control" required>
+                        <option value="Never">Never</option>
+                        <option value="Occasional">Occasional</option>
+                        <option value="Frequent">Frequent</option>
+                        <option value="Full-time">Full-time</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-section">
+            <h3 style="margin-bottom: 1.5rem; color: var(--accent-blue);">Security Profile</h3>
+            <div class="form-grid">
+                
+                <div class="form-group">
+                    <label class="form-label">Security Awareness Training</label>
+                    <div class="radio-group">
+                        <label class="radio-label"><input type="radio" name="security_training" value="Yes" required> Yes</label>
+                        <label class="radio-label"><input type="radio" name="security_training" value="No" required> No</label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">MFA Enabled</label>
+                    <div class="radio-group">
+                        <label class="radio-label"><input type="radio" name="mfa_enabled" value="Yes" required> Yes</label>
+                        <label class="radio-label"><input type="radio" name="mfa_enabled" value="No" required> No</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password_hygiene">Password Hygiene</label>
+                    <select id="password_hygiene" name="password_hygiene" class="form-control" required>
+                        <option value="">Select Status</option>
+                        <option value="Poor">Poor (Reuses passwords)</option>
+                        <option value="Fair">Fair (Unique but simple)</option>
+                        <option value="Good">Good (Uses Password Manager)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="social_media_exposure">Social Media Exposure</label>
+                    <select id="social_media_exposure" name="social_media_exposure" class="form-control" required>
+                        <option value="">Select Level</option>
+                        <option value="Low">Low (Private accounts)</option>
+                        <option value="Medium">Medium (Some public info)</option>
+                        <option value="High">High (Very active/public)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="sensitive_data_access">Sensitive Data Access</label>
+                    <select id="sensitive_data_access" name="sensitive_data_access" class="form-control" required>
+                        <option value="None">None</option>
+                        <option value="Limited">Limited (Internal only)</option>
+                        <option value="High">High (PII, Financials, Code)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="security_policy_awareness">Policy Awareness</label>
+                    <select id="security_policy_awareness" name="security_policy_awareness" class="form-control" required>
+                        <option value="Low">Low</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                    </select>
+                </div>
+
+            </div>
+        </div>
+
+        <div style="text-align: right;">
+            <button type="submit" class="btn btn-primary" style="font-size: 1.1rem; padding: 0.75rem 2rem;">Save Profile & Calculate Risk</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

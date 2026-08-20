@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fake IT Support - {{ simulation.user.name }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {font-family: 'Inter', sans-serif; background-color: #f3f4f6; margin:0; padding:2rem; color:#1f2937;}
+        .email-client {max-width:800px; margin:0 auto; background:white; border-radius:8px; box-shadow:0 4px 6px -1px rgba(0,0,0,0.1); overflow:hidden;}
+        .action-bar {background:#1f2937; color:white; padding:1rem; display:flex; justify-content:space-between;}
+        .btn {padding:0.5rem 1rem; border:none; border-radius:4px; cursor:pointer; font-weight:600;}
+        .btn-report {background:#ef4444; color:white;}
+        .btn-analyze {background:#f59e0b; color:white;}
+        .suspicious-link {display:inline-block; background:#2563eb; color:white; padding:0.75rem 1.5rem; border-radius:4px; font-weight:bold; margin-top:1.5rem;}
+        #analysis-overlay {display:none; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(255,255,255,0.95); padding:2rem; z-index:10;}
+        .indicator-item {margin-bottom:1rem;}
+    </style>
+</head>
+<body>
+    <div style="text-align:center; margin-bottom:1rem; color:#6b7280; font-weight:bold;">
+        <i class="fa-solid fa-vial"></i> CONTROLLED SIMULATION ENVIRONMENT
+    </div>
+    <div class="email-client" style="max-width:860px;margin:auto;background:white;padding:2rem;border-radius:8px;box-shadow:0 4px 6px -1px rgba(0,0,0,0.1);color:#111;">
+        <div class="action-bar">
+            <div><strong>Inbox</strong> - {{ simulation.user.name }}</div>
+            <div style="display:flex; gap:0.5rem;">
+                <form method="POST" action="{{ url_for('simulation.handle_action', sim_id=simulation.id) }}" style="display:inline;">
+                    <input type="hidden" name="action" value="report">
+                    <button type="submit" class="btn btn-report"><i class="fa-solid fa-flag"></i> Report Request</button>
+                </form>
+                <button type="button" class="btn btn-analyze" onclick="showAnalysis()"><i class="fa-solid fa-magnifying-glass"></i> Analyze Message</button>
+            </div>
+        </div>
+        <div class="email-meta" style="padding:1.5rem; border-bottom:1px solid #e5e7eb;">
+            <h2 style="margin:0 0 0.5rem 0; font-size:1.25rem;">Urgent IT Support Verification Required</h2>
+            <div style="color:#4b5563;">
+                <strong>From:</strong> IT Help Desk &lt;it-support@company.test&gt;<br>
+                <strong>To:</strong> {{ simulation.user.name }} &lt;{{ simulation.user.employee_id }}@company.com&gt;<br>
+                <strong>Date:</strong> Just now
+            </div>
+        </div>
+        <div class="email-body" style="padding:2rem; min-height:300px;">
+            <p>Dear {{ simulation.user.name }},</p>
+            <p>Our monitoring system has detected unusual activity on your workstation. To ensure the security of your device, please verify your account information immediately.</p>
+            <p>Failure to comply may result in temporary suspension of your account.</p>
+            <form method="POST" action="{{ url_for('simulation.handle_action', sim_id=simulation.id) }}">
+                <input type="hidden" name="action" value="click">
+                <button type="submit" class="suspicious-link">Verify Account Now</button>
+            </form>
+            <p style="margin-top:2rem; color:#6b7280; font-size:0.875rem;">IT Support Team</p>
+        </div>
+        <div id="analysis-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);backdrop-filter:blur(4px);justify-content:center;align-items:center;z-index:1000;">
+  <div class="modal-content" style="background:white;padding:2rem 1.5rem;max-width:580px;width:90%;border-radius:10px;box-shadow:0 4px 12px rgba(0,0,0,0.2);">
+    <h3 style="margin-top:0;color:#1f2937;">Analyze Suspicious Indicators</h3>
+    <p>Select the warning signs you noticed in this message:</p>
+    <form method="POST" action="{{ url_for('simulation.handle_action', sim_id=simulation.id) }}">
+      <input type="hidden" name="action" value="submit_analysis">
+      <div class="indicator-item"><label><input type="checkbox" name="indicators" value="urgency"> Urgent language</label></div>
+      <div class="indicator-item"><label><input type="checkbox" name="indicators" value="sender"> Suspicious sender domain</label></div>
+      <div class="indicator-item"><label><input type="checkbox" name="indicators" value="request"> Unexpected verification request</label></div>
+      <div class="indicator-item"><label><input type="checkbox" name="indicators" value="link"> Action button/link</label></div>
+      <div class="indicator-item"><label><input type="checkbox" name="indicators" value="pressure"> Pressure to act immediately</label></div>
+      <div style="margin-top:1.5rem;text-align:right;">
+        <button type="submit" class="btn" style="background:#10b981;color:white;padding:.5rem 1rem;border:none;border-radius:4px;">Submit Analysis</button>
+        <button type="button" class="btn" style="background:#6b7280;color:white;padding:.5rem 1rem;border:none;border-radius:4px;margin-left:0.5rem;" onclick="hideAnalysis()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+            <h3 style="margin-top:0; color:#1f2937;">Analyze Suspicious Indicators</h3>
+            <p>Select the warning signs you noticed in this message:</p>
+            <form method="POST" action="{{ url_for('simulation.handle_action', sim_id=simulation.id) }}">
+                <input type="hidden" name="action" value="submit_analysis">
+                <div class="indicator-item"><label><input type="checkbox" name="indicators" value="urgency"> Urgent language</label></div>
+                <div class="indicator-item"><label><input type="checkbox" name="indicators" value="sender"> Suspicious sender domain</label></div>
+                <div class="indicator-item"><label><input type="checkbox" name="indicators" value="request"> Unexpected verification request</label></div>
+                <div class="indicator-item"><label><input type="checkbox" name="indicators" value="link"> Action button/link</label></div>
+                <div style="margin-top:2rem;">
+                    <button type="submit" class="btn" style="background:#10b981; color:white;">Submit Analysis</button>
+                    <button type="button" class="btn" onclick="hideAnalysis()" style="background:#6b7280; color:white;">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+        function showAnalysis(){
+            document.getElementById('analysis-overlay').style.display='block';
+            fetch('{{ url_for('simulation.handle_action', sim_id=simulation.id) }}', {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:'action=analyze'});
+        }
+        function hideAnalysis(){document.getElementById('analysis-overlay').style.display='none';}
+    </script>
+</body>
+</html>

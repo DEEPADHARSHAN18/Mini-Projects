@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+
+{% block title %}SecureRisk AI - Social Engineering Risk Assessment{% endblock %}
+
+{% block extra_head %}
+<style>
+    .hero {
+        text-align: center;
+        padding: 4rem 0;
+    }
+    
+    .hero h1 {
+        font-size: 3.5rem;
+        margin-bottom: 1.5rem;
+        background: linear-gradient(to right, var(--text-main), var(--accent-blue));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    
+    .hero p {
+        font-size: 1.25rem;
+        color: var(--text-muted);
+        max-width: 800px;
+        margin: 0 auto 2rem auto;
+    }
+    
+    .hero-cta {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        margin-bottom: 4rem;
+    }
+    
+    .modules-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin: 4rem 0;
+    }
+    
+    .module-card {
+        text-align: center;
+        padding: 2rem;
+        border-top: 4px solid var(--accent-blue);
+    }
+    
+    .module-icon {
+        font-size: 3rem;
+        color: var(--accent-blue);
+        margin-bottom: 1.5rem;
+    }
+    
+    .section-title {
+        text-align: center;
+        font-size: 2.5rem;
+        margin: 4rem 0 2rem 0;
+    }
+    
+    .features-list {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+    }
+    
+    .feature-item {
+        display: flex;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+    
+    .feature-icon {
+        color: var(--success);
+        font-size: 1.5rem;
+        margin-top: 0.25rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <h1>AI-Driven Risk Assessment</h1>
+    <p>Reduce organizational exposure to social engineering attacks. Profile users, conduct safe simulated attacks, and leverage machine learning to calculate accurate risk probability.</p>
+    
+    <div class="hero-cta">
+        <a href="{{ url_for('simulation.select') }}" class="btn btn-primary" style="font-size: 1.1rem; padding: 0.75rem 2rem;">Start Risk Assessment</a>
+        <a href="#how-it-works" class="btn btn-outline" style="font-size: 1.1rem; padding: 0.75rem 2rem;">Learn More</a>
+    </div>
+</div>
+
+<div class="modules-grid">
+    <div class="card module-card">
+        <i class="fa-solid fa-users module-icon"></i>
+        <h3>1. User Profiling</h3>
+        <p>Capture essential cybersecurity behavioral traits, training history, and security exposure attributes for each employee.</p>
+    </div>
+    
+    <div class="card module-card">
+        <i class="fa-solid fa-envelope-open-text module-icon"></i>
+        <h3>2. Attack Simulation</h3>
+        <p>Deploy completely safe, localized simulated social engineering scenarios to measure behavioral responses without risking real credentials.</p>
+    </div>
+    
+    <div class="card module-card">
+        <i class="fa-solid fa-brain module-icon"></i>
+        <h3>3. Risk Evaluation</h3>
+        <p>Analyze profile attributes and simulation responses using Machine Learning to predict risk levels and generate targeted recommendations.</p>
+    </div>
+</div>
+
+<h2 id="how-it-works" class="section-title">How It Works</h2>
+<div class="card" style="padding: 3rem;">
+    <div class="features-list">
+        <div class="feature-item">
+            <i class="fa-solid fa-check-circle feature-icon"></i>
+            <div>
+                <h4>Zero Credential Collection</h4>
+                <p>Designed for defense. The simulation engine never asks for or stores actual user passwords or OTPs.</p>
+            </div>
+        </div>
+        
+        <div class="feature-item">
+            <i class="fa-solid fa-check-circle feature-icon"></i>
+            <div>
+                <h4>Behavioral Analytics</h4>
+                <p>We analyze how users react (clicking, reporting, ignoring) and their ability to identify suspicious indicators.</p>
+            </div>
+        </div>
+        
+        <div class="feature-item">
+            <i class="fa-solid fa-check-circle feature-icon"></i>
+            <div>
+                <h4>Data-Driven Decisions</h4>
+                <p>Scikit-learn powered models evaluate the probability of a user falling victim to future attacks.</p>
+            </div>
+        </div>
+        
+        <div class="feature-item">
+            <i class="fa-solid fa-check-circle feature-icon"></i>
+            <div>
+                <h4>Actionable Recommendations</h4>
+                <p>Automatically generate specific, personalized security recommendations based on identified risk factors.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

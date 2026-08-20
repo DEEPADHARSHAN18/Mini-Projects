@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Users - SecureRisk AI{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h2>Users</h2>
+        <a href="{{ url_for('users.create_profile') }}" class="btn btn-primary">Add New User</a>
+    </div>
+
+    {% if users %}
+    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+        <thead>
+            <tr style="border-bottom: 2px solid var(--border-color);">
+                <th style="padding: 1rem 0;">Name</th>
+                <th style="padding: 1rem 0;">Employee ID</th>
+                <th style="padding: 1rem 0;">Department</th>
+                <th style="padding: 1rem 0;">Role</th>
+                <th style="padding: 1rem 0; text-align: right;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr style="border-bottom: 1px solid var(--border-color);">
+                <td style="padding: 1rem 0;">{{ user.name }}</td>
+                <td style="padding: 1rem 0;">{{ user.employee_id }}</td>
+                <td style="padding: 1rem 0;">{{ user.department }}</td>
+                <td style="padding: 1rem 0;">{{ user.role }}</td>
+                <td style="padding: 1rem 0; text-align: right;">
+                    <a href="{{ url_for('users.details', user_id=user.id) }}" class="btn btn-outline" style="padding: 0.25rem 0.75rem; font-size: 0.875rem;">View Profile</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div style="text-align: center; padding: 2rem; color: var(--text-muted);">
+        <p>No users found. Create a user profile to get started.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

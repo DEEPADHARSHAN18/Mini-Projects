@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}Suspicious Attachment Simulation{% endblock %}
+{% block content %}
+<div class="email-client" style="max-width:860px;margin:auto;background:white;padding:2rem;border-radius:8px;box-shadow:0 4px 6px -1px rgba(0,0,0,0.1);color:#111;">
+  <h2>You've Received an Email with an Attachment</h2>
+  <p>Dear {{ simulation.user.name }},</p>
+  <p>Please find attached the invoice you requested. Open it to view the details.</p>
+  <p><strong>Attachment:</strong> Invoice_2026.pdf</p>
+  <form method="POST" action="{{ url_for('simulation.handle_action', sim_id=simulation.id) }}" style="margin-bottom:1rem;">
+    <input type="hidden" name="action" value="click">
+    <button type="submit" class="suspicious-link" style="background:#2563eb;color:white;padding:.75rem 1.5rem;border:none;border-radius:4px;font-weight:bold;">Open Attachment</button>
+  </form>
+  <form method="POST" action="{{ url_for('simulation.handle_action', sim_id=simulation.id) }}" style="margin-bottom:1rem;">
+    <input type="hidden" name="action" value="report">
+    <button type="submit" class="btn btn-report" style="background:#ef4444;color:white;padding:.5rem 1rem;border:none;border-radius:4px;">Report Suspicious Email</button>
+  </form>
+  <button type="button" class="btn btn-analyze" onclick="showAnalysis()" style="background:#f59e0b;color:white;padding:.5rem 1rem;border:none;border-radius:4px;">Analyze Message</button>
+  <div id="analysis-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);backdrop-filter:blur(4px);justify-content:center;align-items:center;z-index:1000;">
+  <div class="modal-content" style="background:white;padding:2rem 1.5rem;max-width:580px;width:90%;border-radius:10px;box-shadow:0 4px 12px rgba(0,0,0,0.2);">
+    <h3 style="margin-top:0;color:#1f2937;">Analyze Suspicious Indicators</h3>
+    <p>Select the warning signs you noticed in this email:</p>
+    <form method="POST" action="{{ url_for('simulation.handle_action', sim_id=simulation.id) }}">
+      <input type="hidden" name="action" value="submit_analysis">
+      <div class="indicator-item"><label><input type="checkbox" name="indicators" value="attachment"> Unexpected attachment</label></div>
+      <div class="indicator-item"><label><input type="checkbox" name="indicators" value="sender"> Unknown sender</label></div>
+      <div class="indicator-item"><label><input type="checkbox" name="indicators" value="urgency"> Urgent language</label></div>
+      <div style="margin-top:1.5rem;text-align:right;">
+        <button type="submit" class="btn" style="background:#10b981;color:white;padding:.5rem 1rem;border:none;border-radius:4px;">Submit Analysis</button>
+        <button type="button" class="btn" style="background:#6b7280;color:white;padding:.5rem 1rem;border:none;border-radius:4px;margin-left:0.5rem;" onclick="hideAnalysis()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+</div>
+<script>
+function showAnalysis(){document.getElementById('analysis-modal').style.display='flex';}
+function hideAnalysis(){document.getElementById('analysis-modal').style.display='none';}
+</script>
+{% endblock %}

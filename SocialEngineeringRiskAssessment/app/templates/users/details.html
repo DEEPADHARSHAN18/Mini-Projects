@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}User Profile - SecureRisk AI{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 900px; margin: 0 auto;">
+    
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1.5rem;">
+        <div>
+            <h2 style="margin: 0 0 0.5rem 0;">{{ user.name }}</h2>
+            <div style="color: var(--text-muted);">{{ user.role }} &middot; {{ user.department }} Dept</div>
+            <div style="font-size: 0.875rem; color: var(--text-muted); margin-top: 0.25rem;">Employee ID: {{ user.employee_id }}</div>
+        </div>
+        
+        {% if assessment %}
+            <div style="text-align: right;">
+                <div style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 0.25rem;">Current Risk Level</div>
+                <div class="badge badge-{% if assessment.risk_level == 'HIGH' %}high{% elif assessment.risk_level == 'MEDIUM' %}medium{% else %}low{% endif %}" style="font-size: 1.1rem; padding: 0.5rem 1rem;">
+                    {{ assessment.risk_level }}
+                </div>
+            </div>
+        {% else %}
+            <div style="text-align: right;">
+                <div style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 0.25rem;">Current Risk Level</div>
+                <div class="badge" style="background-color: var(--border-color); color: var(--text-muted); font-size: 1.1rem; padding: 0.5rem 1rem;">
+                    NOT ASSESSED
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+        
+        <!-- Profile Attributes -->
+        <div class="card" style="background-color: var(--bg-dark);">
+            <h3 style="margin-top: 0; color: var(--accent-blue);">Security Profile</h3>
+            
+            <table style="width: 100%; border-collapse: collapse;">
+                <tr>
+                    <td style="padding: 0.75rem 0; border-bottom: 1px solid var(--border-color);"><strong>MFA Enabled</strong></td>
+                    <td style="padding: 0.75rem 0; text-align: right; border-bottom: 1px solid var(--border-color);">
+                        {% if user.mfa_enabled %}
+                            <span style="color: var(--success);"><i class="fa-solid fa-check"></i> Yes</span>
+                        {% else %}
+                            <span style="color: var(--danger);"><i class="fa-solid fa-times"></i> No</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.75rem 0; border-bottom: 1px solid var(--border-color);"><strong>Security Training</strong></td>
+                    <td style="padding: 0.75rem 0; text-align: right; border-bottom: 1px solid var(--border-color);">
+                        {% if user.security_training %}
+                            <span style="color: var(--success);"><i class="fa-solid fa-check"></i> Completed</span>
+                        {% else %}
+                            <span style="color: var(--danger);"><i class="fa-solid fa-times"></i> Missing</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.75rem 0; border-bottom: 1px solid var(--border-color);"><strong>Password Hygiene</strong></td>
+                    <td style="padding: 0.75rem 0; text-align: right; border-bottom: 1px solid var(--border-color);">{{ user.password_hygiene }}</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.75rem 0; border-bottom: 1px solid var(--border-color);"><strong>Social Media Exposure</strong></td>
+                    <td style="padding: 0.75rem 0; text-align: right; border-bottom: 1px solid var(--border-color);">{{ user.social_media_exposure }}</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.75rem 0; border-bottom: 1px solid var(--border-color);"><strong>Sensitive Data Access</strong></td>
+                    <td style="padding: 0.75rem 0; text-align: right; border-bottom: 1px solid var(--border-color);">{{ user.sensitive_data_access }}</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.75rem 0; border-bottom: 1px solid var(--border-color);"><strong>Policy Awareness</strong></td>
+                    <td style="padding: 0.75rem 0; text-align: right; border-bottom: 1px solid var(--border-color);">{{ user.security_policy_awareness }}</td>
+                </tr>
+            </table>
+        </div>
+        
+        <!-- Latest Assessment -->
+        <div class="card" style="background-color: var(--bg-dark);">
+            <h3 style="margin-top: 0; color: var(--accent-blue);">Latest Assessment</h3>
+            
+            {% if assessment %}
+                <div style="display: flex; flex-direction: column; gap: 1rem;">
+                    <div>
+                        <div style="font-size: 0.875rem; color: var(--text-muted);">Risk Score</div>
+                        <div class="text-{% if assessment.risk_level == 'HIGH' %}danger{% elif assessment.risk_level == 'MEDIUM' %}warning{% else %}success{% endif %}" style="font-size: 2rem; font-weight: 700;">
+                            {{ assessment.final_risk_score }} / 100
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div style="font-size: 0.875rem; color: var(--text-muted);">ML Prediction Probability</div>
+                        <div>{{ "%.1f"|format(assessment.ml_probability) }}% (High Risk)</div>
+                    </div>
+                    
+                    <div style="margin-top: 1rem;">
+                        <a href="{{ url_for('risk.report', assessment_id=assessment.id) }}" class="btn btn-outline" style="width: 100%; text-align: center; display: inline-block;">
+                            View Full Report
+                        </a>
+                    </div>
+                </div>
+            {% else %}
+                <div style="text-align: center; padding: 2rem 0; color: var(--text-muted);">
+                    <i class="fa-solid fa-clipboard-question" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+                    <p>No risk assessment has been performed for this user yet.</p>
+                </div>
+            {% endif %}
+        </div>
+        
+    </div>
+
+</div>
+{% endblock %}

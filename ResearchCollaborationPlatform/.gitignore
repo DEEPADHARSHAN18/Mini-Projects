@@ -1,0 +1,21 @@
+# Frontend
+frontend/node_modules/
+frontend/dist/
+
+# Backend
+backend/target/
+target/
+
+# Secrets
+.env
+.env.*
+
+# IDE
+.vscode/
+.idea/
+
+# Temporary scripts
+check_*.py
+test_*.py
+fix_ts.py
+generate_*.py

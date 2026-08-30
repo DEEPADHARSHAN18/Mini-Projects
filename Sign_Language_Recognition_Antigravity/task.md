@@ -1,0 +1,8 @@
+- [x] Update src/config/settings.py
+- [x] Update src/detection/hand_detector.py (VIDEO mode)
+- [x] Create src/recognition/sentence_builder.py
+- [x] Create src/speech/tts.py
+- [x] Create src/recognition/smoother.py
+- [x] Create src/recognition/fusion.py
+- [x] Create app/main.py
+- [x] Test the pipeline

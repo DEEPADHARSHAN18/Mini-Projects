@@ -1,0 +1,55 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Datasets and models (ignore large files to prevent committing to GitHub)
+dataset/raw/*
+dataset/processed/*
+dataset/landmarks/*
+dataset/webcam/*
+dataset/test/*
+models/*.keras
+models/*.h5
+models/*.pkl
+models/*.tflite
+models/*.pb
+
+# Keep directory structure for dataset and models
+!dataset/raw/.gitkeep
+!dataset/processed/.gitkeep
+!dataset/landmarks/.gitkeep
+!dataset/webcam/.gitkeep
+!dataset/test/.gitkeep
+!models/.gitkeep
+
+# IDEs and Editors
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# Logs and outputs
+outputs/metrics/*
+outputs/plots/*
+outputs/confusion_matrices/*
+outputs/predictions/*
+*.log
+!outputs/metrics/.gitkeep
+!outputs/plots/.gitkeep
+!outputs/confusion_matrices/.gitkeep
+!outputs/predictions/.gitkeep
+
+outputs/hand_detection/*
